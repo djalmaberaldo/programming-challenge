@@ -3,13 +3,23 @@ from db import db
 import pandas as pd
 import gzip
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, or_, text
 
 package_dir = os.path.dirname(os.path.realpath(__file__))
 
-def get_all_titles():
-    title = Title()
-    return Title.query.limit(20)
+def get_all_titles(search='', filterBy=''):
+    if filterBy is not '':
+        filters = [field+" like '%"+search+"%'" for field in filterBy.split(",")]
+        filters_joined = ''
+        for f in filters:
+            if filters.index(f) < len(filters)-1:
+                filters_joined = filters_joined + f + ' or '
+            else:
+                filters_joined = filters_joined + f
+        print(filters_joined)
+        return db.session.query(Title).filter(text(filters_joined)).limit(20)
+    else:
+        return db.session.query(Title).limit(20)
 
 def get_all_names():
     name = Name()

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 import json
@@ -23,7 +23,9 @@ def home():
 @app.route('/titles', methods=['GET'])
 @cross_origin()
 def get_titles():
-    results = implementations.get_all_titles();
+    search = request.args.get('search')
+    filterBy = request.args.get('filterBy')
+    results = implementations.get_all_titles(search, filterBy);
     return process_response(results)
 
 
