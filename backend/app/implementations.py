@@ -9,7 +9,7 @@ package_dir = os.path.dirname(os.path.realpath(__file__))
 
 def get_all_titles():
     title = Title()
-    return Title.query.limit(10)
+    return Title.query.limit(20)
 
 def get_all_names():
     name = Name()
