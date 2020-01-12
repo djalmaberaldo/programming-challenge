@@ -1,1 +1,14 @@
-<p>movie-finder works!</p>
+<h2>List of movies</h2>
+<div class="container mt-5">
+    <div   class="list-movies">
+        <div *ngFor="let movie of movies" class="card">
+            <div class="card-header">
+                <h5 class="card-title">{{movie.primaryTitle}}</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text"><b>Type</b>: <span>{{movie.titleType}}</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+

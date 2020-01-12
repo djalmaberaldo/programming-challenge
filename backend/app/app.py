@@ -1,6 +1,7 @@
 import os
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS, cross_origin
 import json
 import models
 from db import initialize_db
@@ -10,6 +11,9 @@ app = Flask(__name__, instance_relative_config=True)
 app.config["SQLALCHEMY_DATABASE_URI"] ="sqlite:///movies.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 initialize_db(app)
 
 @app.route('/')
@@ -17,6 +21,7 @@ def home():
     return '';
 
 @app.route('/titles', methods=['GET'])
+@cross_origin()
 def get_titles():
     results = implementations.get_all_titles();
     return process_response(results)
