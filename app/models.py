@@ -42,37 +42,23 @@ class TitleRatings(db.Model):
             'titleId': self.titleId
         }
 
-professions = db.Table ('professions',
-    db.Column('name_id', db.Integer, db.ForeignKey('name.id'), primary_key=True),
-    db.Column('professions_id', db.Integer, db.ForeignKey('profession.id'), primary_key=True)
-)
-
 class Name(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tconst = db.Column(db.String(80), unique=False, nullable=False)
+    nconst = db.Column(db.String(80), unique=False, nullable=False)
     primaryName = db.Column(db.String(80), unique=False, nullable=False)
     birthYear = db.Column(db.Integer, unique=False, nullable=False)
     deathYear = db.Column(db.Integer, unique=False, nullable=False)
-    professions = db.relationship('Profession', secondary=professions, backref=db.backref('person', lazy=True), lazy="subquery")
+    knownForTitles = db.Column(db.String(80), unique=False, nullable=False)
+    primaryProfession  = db.Column(db.String(80), unique=False, nullable=False)
 
     @property
     def serialize(self):
         return {
             'id': self.id,
-            'tconst': self.tconst,
+            'tconst': self.nconst,
             'primaryName': self.primaryName,
             'birthYear': self.birthYear,
             'deathYear': self.deathYear,
-            'professions': self.professions          
-        }
-
-class Profession(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=False, nullable=False)
-
-    @property
-    def serialize(self):
-        return {
-            'id': self.id,
-            'name': self.name
+            'professions': self.primaryProfession,
+            'knownForTitles': self.knownForTitles        
         }

@@ -32,4 +32,19 @@ def insert_data_title():
         df = df.dropna()
         print(df.head())
         df.to_sql('title', engine, if_exists='append', index=False)
-    return 'loadedS'
+    return 'Table Loaded'
+
+def insert_data_name():
+    print('Inserting title data into table')
+    engine = create_engine("sqlite:///movies.db")
+    file_to_search =  os.path.join(package_dir,'../dataset/name.basics.tsv.gz')
+    with gzip.open(file_to_search,'r') as file:
+        print('Reading tsv file')
+        df = pd.read_csv(file, sep="\t")
+        print('Removing null values')
+        df = df.dropna()
+        print(df.head())
+        df = df.loc[~df['knownForTitles'].isin(["\\N"])]
+        df = df.loc[~df['primaryProfession'].isin(["\\N"])]
+        df.to_sql('name', engine, if_exists='append', index=False)
+    return 'Table loaded'
