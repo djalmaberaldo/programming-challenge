@@ -7,6 +7,7 @@ import { MovieFinderComponent } from './movie-finder/movie-finder.component';
 import { HeaderBarComponent } from './header-bar/header-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

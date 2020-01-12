@@ -7,7 +7,7 @@ from sqlalchemy import create_engine, or_, text
 
 package_dir = os.path.dirname(os.path.realpath(__file__))
 
-def get_all_titles(search='', filterBy=''):
+def get_all_titles(search='', filterBy='primaryTitle, originalTitle'):
     if filterBy is not '':
         filters = [field+" like '%"+search+"%'" for field in filterBy.split(",")]
         filters_joined = ''
@@ -17,9 +17,9 @@ def get_all_titles(search='', filterBy=''):
             else:
                 filters_joined = filters_joined + f
         print(filters_joined)
-        return db.session.query(Title).filter(text(filters_joined)).limit(20)
+        return db.session.query(Title).filter(text(filters_joined)).limit(200)
     else:
-        return db.session.query(Title).limit(20)
+        return db.session.query(Title).limit(200)
 
 def get_all_names():
     name = Name()
