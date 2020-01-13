@@ -13,7 +13,7 @@ export class MovieFinderComponent implements OnInit {
   movies: IMovie[];
   message: any;
   search = '';
-  filterBy = 'primaryTitle, originalTitle';
+  filterBy = 'primaryTitle';
 
   constructor(
     private movieService: MovieService
@@ -32,10 +32,5 @@ export class MovieFinderComponent implements OnInit {
     );
   }
 
-  loadSearch(search) {
-    console.log(search);
-    this.search = search;
-    this.loadMovies();
-  }
-
+ 
 }

@@ -7,20 +7,10 @@ from sqlalchemy import create_engine, or_, text
 
 package_dir = os.path.dirname(os.path.realpath(__file__))
 
-def get_all_titles(search='', filterBy='primaryTitle, originalTitle'):
-    if filterBy is not '':
-        filters = [field+" like '%"+search+"%'" for field in filterBy.split(",")]
-        filters_joined = ''
-        for f in filters:
-            if filters.index(f) < len(filters)-1:
-                filters_joined = filters_joined + f + ' or '
-            else:
-                filters_joined = filters_joined + f
-        print(filters_joined)
-        return db.session.query(Title).filter(text(filters_joined)).limit(200)
-    else:
-        return db.session.query(Title).limit(200)
-
+def get_all_titles(search='', filterBy='primaryTitle'):
+    filters = filterBy+" like '%"+search+"%' and isAdult=0"
+    return db.session.query(Title).filter(text(filters))
+   
 def get_all_names():
     name = Name()
     return Name.query.limit(10)

@@ -7,6 +7,7 @@ export interface IMovie {
     startYear ?: number;
     endYear ?: number;
     runtimeMinutes ?: number;
+    genres?: string;
 }
 
 

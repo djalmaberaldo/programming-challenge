@@ -1,25 +1,62 @@
-<h2>List of movies</h2>
-<div class="container mt-5">
-    <div class="list-movies">
-        <div class="w-100">
-            <div class="form-group">
-                <label for="search"><h4>Search:</h4></label>
-                <input type="text" class="form-control" id="search" (input)="loadMovies()"  [(ngModel)]="search" aria-describedby="emailHelp" placeholder="Search something">
+<div class="container-fluid w-100">
+    <div class="mt-3"><h2>List of movies</h2></div>
+    <div class="container mt-5 w-100">
+        <div class="d-flex">
+            <div class="w-50">
+                <div class="form-group">
+                    <label for="search"><h4>Search:</h4></label>
+                    <input type="text" class="form-control" id="search" (input)="loadMovies()"  [(ngModel)]="search" aria-describedby="emailHelp" placeholder="Search something">
+                </div>
+            </div>
+            <div class="w-50 ml-3">
+                <div class="form-group">
+                    <h4>Filter by:</h4>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" (change)="loadMovies()" name="filterBy" [checked]="primaryTitle" value="primaryTitle" [(ngModel)]="filterBy" >
+                        <label class="form-check-label">Title</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"  (change)="loadMovies()" name="filterBy" value="genres" [(ngModel)]="filterBy" >
+                        <label class="form-check-label">Genres</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio"  (change)="loadMovies()" name="filterBy" value="titleType" [(ngModel)]="filterBy" >
+                        <label class="form-check-label">Type</label>
+                    </div>
+                </div>
             </div>
         </div>
-        <div *ngFor="let movie of movies | paginate: { itemsPerPage: 12, currentPage: p }" class="card">
-            <div class="card-header">
-                <h5 class="card-title">{{movie.primaryTitle}}</h5>
-            </div>
-            <div class="card-body">
-                <p class="card-text"><b>Type</b>: <span>{{movie.titleType}}</span></p>
+        <div class="list-movies">
+            <div *ngFor="let movie of movies | paginate: { itemsPerPage: 12, currentPage: p }" class="card">
+                <div class="card-header">
+                    <h6 class="card-title">{{movie.primaryTitle}}</h6>
+                </div>
+                <div class="card-body d-flex">
+                    <div>
+                        <p class="card-text"><b>Original</b>: <span>{{movie.originalTitle}}</span></p>
+                    </div>
+                    <div>
+                        <p class="card-text"><b>Type</b>: <span>{{movie.titleType}}</span></p>
+                    </div>
+                    <div>
+                        <p class="card-text"><b>Genres</b>: <span>{{movie.genres}}</span></p>
+                    </div>                    
+                    <div>
+                        <p class="card-text"><b>Run Time</b>: <span>{{movie.runtimeMinutes}} min</span></p>
+                    </div>
+                    <div >
+                        <p class="card-text"><b>Start Year</b>: <span>{{movie.startYear}} </span></p>
+                    </div>
+                    <div *ngIf="movie.titleType=='tvSeries'">
+                        <p class="card-text"><b>End Year</b>: <span>{{movie.endYear}} min</span></p>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="mt-3 text-center">
+            <pagination-controls (pageChange)="p = $event">
+            </pagination-controls>
+        </div>
     </div>
-    <div class="mt-3 text-center">
-        <pagination-controls (pageChange)="p = $event">
-        </pagination-controls>
-    </div>
-
 </div>
 
