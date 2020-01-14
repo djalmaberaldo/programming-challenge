@@ -1,1 +1,5 @@
 __pycache__/
+
+backend/app/__pycache__/
+
+frontend/movie-app/node_modules/

@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 import json
 import models
-from db import initialize_db
 import implementations
 
 app = Flask(__name__, instance_relative_config=True)
@@ -14,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-initialize_db(app)
+models.initialize_db(app)
 
 @app.route('/')
 def home():
@@ -28,6 +27,27 @@ def get_titles():
     results = implementations.get_all_titles(search, filterBy);
     return process_response(results)
 
+@app.route('/titles-by-year', methods=['GET'])
+@cross_origin()
+def get_top_titles_by_yeaar():
+    year = request.args.get('year')
+    results = implementations.get_titles_by_year(year);
+    return process_response(results)
+
+@app.route('/movies', methods=['GET'])
+@cross_origin()
+def get_movies():
+    search = request.args.get('search')
+    filterBy = request.args.get('filterBy')    
+    results = implementations.get_all_movies(search, filterBy);
+    return process_response(results)
+
+@app.route('/movies-by-year', methods=['GET'])
+@cross_origin()
+def get_top_movies_by_yeaar():
+    year = request.args.get('year')
+    results = implementations.get_movies_by_year(year);
+    return process_response(results)
 
 @app.route('/names', methods=['GET'])
 def get_names():
