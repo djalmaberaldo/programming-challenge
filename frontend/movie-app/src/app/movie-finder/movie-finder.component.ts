@@ -78,11 +78,19 @@ export class MovieFinderComponent implements OnInit {
       .findNames({
         tconst: identifier
       }).subscribe(
-        (res: HttpResponse<IName[]>) => this.movieNames[identifier] = res.body['data'].map(x => x.primaryName).join(','),
+        (res: HttpResponse<IName[]>) => this.movieNames[identifier] = this.checkNameResult(res.body['data']),
         (res: HttpErrorResponse) => console.log(res.message)
       );
   }
-  
+
+  checkNameResult(result) {
+    if (Array.isArray(result) && result.length) {
+      return result.map(x => x.primaryName).join(',');
+    } else {
+      return 'Result not found';
+    }
+  }
+
   adjustNames(id) {
     return this.movieNames[id];
   }
