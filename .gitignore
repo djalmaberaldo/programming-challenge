@@ -3,3 +3,6 @@ __pycache__/
 backend/app/__pycache__/
 
 frontend/movie-app/node_modules/
+dataset/
+
+backend/app/movies.db

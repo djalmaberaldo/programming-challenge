@@ -10,4 +10,9 @@ export interface IMovie {
     genres?: string;
 }
 
+export interface IName {
+    id?: number;
+    primaryName ?: string;
+}
+
 

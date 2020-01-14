@@ -40,21 +40,17 @@ class Title(db.Model):
 
 class Name(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nconst = db.Column(db.String(80), unique=False, nullable=False)
     primaryName = db.Column(db.String(80), unique=False, nullable=False)
     birthYear = db.Column(db.Integer, unique=False, nullable=False)
     deathYear = db.Column(db.Integer, unique=False, nullable=False)
     knownForTitles = db.Column(db.String(80), unique=False, nullable=False)
-    primaryProfession  = db.Column(db.String(80), unique=False, nullable=False)
 
     @property
     def serialize(self):
         return {
             'id': self.id,
-            'tconst': self.nconst,
             'primaryName': self.primaryName,
             'birthYear': self.birthYear,
             'deathYear': self.deathYear,
-            'professions': self.primaryProfession,
             'knownForTitles': self.knownForTitles        
         }

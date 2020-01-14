@@ -5,6 +5,7 @@ from flask_cors import CORS, cross_origin
 import json
 import models
 import implementations
+from flask_expects_json import expects_json
 
 app = Flask(__name__, instance_relative_config=True)
 app.config["SQLALCHEMY_DATABASE_URI"] ="sqlite:///movies.db"
@@ -43,17 +44,19 @@ def get_movies():
     results, total = implementations.get_all_movies(search, filterBy, page);
     return process_response(results, total)
 
-@app.route('/movies-by-year', methods=['GET'])
+@app.route('/movies/by-year', methods=['GET'])
 @cross_origin()
 def get_top_movies_by_yeaar():
     year = request.args.get('year')
-    results = implementations.get_movies_by_year(year);
-    return process_response(results)
+    page = request.args.get('page')       
+    results, total = implementations.get_movies_by_year(year, page);
+    return process_response(results, total)
 
-@app.route('/names', methods=['GET'])
+@app.route('/movies/names', methods=['GET','POST'])
 def get_names():
-    results = implementations.get_all_names();
-    return process_response(results)
+    tconst = request.args.get('tconst')
+    results, total = implementations.get_all_names(tconst);
+    return process_response(results, total)
 
 @app.route('/load-titles', methods=['GET'])
 def load_data_title():

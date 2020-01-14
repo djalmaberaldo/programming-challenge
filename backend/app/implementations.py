@@ -6,6 +6,8 @@ import os
 from sqlalchemy import create_engine, or_, text
 
 package_dir = os.path.dirname(os.path.realpath(__file__+'\..\..'))
+engine = create_engine("sqlite:///movies.db")
+
 
 def get_all_titles(search='', filterBy='primaryTitle'):
     filters = add_is_adult_check('' if search == None else filterBy + " like '%"+search+"%' ")
@@ -18,23 +20,20 @@ def get_titles_by_year(year=''):
 def get_all_movies(search='', filterBy='primaryTitle', page=0, page_size=4):
     filters = add_movie_filter(add_is_adult_check(search if search == None else filterBy + " like '%"+search+"%' "))
     query = db.session.query(Title).filter(text(filters))
-    return query.limit(page_size).offset(int(page)*int(page_size)), query.count()
+    return query.limit(int(page_size)).offset(int(page)*int(page_size)), query.count()
 
-def get_movies_by_year(year=''):
+def get_movies_by_year(year='',  page=0, page_size=4):
     if year is None:
         get_all_movies()
     else:
         filters = add_movie_filter(add_is_adult_check("startYear="+year))
-        print(filters)
-        return db.session.query(Title).filter(text(filters)).order_by(Title.averageRating.desc()).limit(10)
+        return db.session.query(Title).filter(text(filters)).order_by(Title.averageRating.desc()).limit(10).offset(int(page)*int(page_size)), 10
 
-def get_all_names():
-    name = Name()
-    return Name.query.limit(10)
+def get_all_names(tconst):
+    return db.session.query(Name).filter(Name.knownForTitles.like(tconst)), db.session.query(Name).filter(Name.knownForTitles.like(tconst)).count()
 
 def insert_data_title():
     print('Inserting title data into table')
-    engine = create_engine("sqlite:///movies.db")
     file_to_search =  os.path.join(package_dir,'dataset\\title.basics.tsv.gz')
     with gzip.open(file_to_search,'r') as file:
         print('Reading tsv file')
@@ -54,17 +53,16 @@ def insert_data_title():
 
 def insert_data_name():
     print('Inserting title data into table')
-    engine = create_engine("sqlite:///movies.db")
-    file_to_search =  os.path.join(package_dir,'../dataset/name.basics.tsv.gz')
+    file_to_search =  os.path.join(package_dir,'dataset\\name.basics.tsv.gz')
     with gzip.open(file_to_search,'r') as file:
         print('Reading tsv file')
         df = pd.read_csv(file, sep="\t")
         print('Removing null values')
-        df = df.dropna()
-        print(df.head())
-        df = df.loc[~df['knownForTitles'].isin(["\\N"])]
-        df = df.loc[~df['primaryProfession'].isin(["\\N"])]
-        df.to_sql('name', engine, if_exists='append', index=False)
+    df = df.dropna()
+    df = df.drop(columns=['nconst','primaryProfession'])
+    print(df.head())
+    df = df.loc[~df['knownForTitles'].isin(["\\N"])]
+    df.to_sql('name', engine, if_exists='append', index=False)
     return 'Table loaded'
 
 def read_ratings_data():

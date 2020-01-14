@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from './movie-finder.service.component';
-import { IMovie } from './movie.model';
+import { IMovie, IName } from './movie.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -16,6 +16,8 @@ export class MovieFinderComponent implements OnInit {
   filterBy = 'primaryTitle';
   page = 0;
   totalItems = 0;
+  movieNames = [];
+  year = '';
 
   constructor(
     private movieService: MovieService
@@ -37,6 +39,14 @@ export class MovieFinderComponent implements OnInit {
     );
   }
 
+  loadMoviesByYear() {
+    this.movieService
+    .findByYear({year: this.year, page: this.page})
+    .subscribe(
+      (res: HttpResponse<IMovie[]>) => this.validateSearch(this.movies = res.body),
+      (res: HttpErrorResponse) => console.log(res.message)
+    );
+  }
 
   validateSearch(result) {
     this.movies = result["data"];
@@ -48,9 +58,33 @@ export class MovieFinderComponent implements OnInit {
     this.loadMovies();
   }
 
+  yearSearchChanged() {
+    this.page = 0;
+    this.loadMoviesByYear();
+  }
+
   pageChanged(page) {
     this.page = page - 1;
-    this.loadMovies();
+    this.movieNames = [];
+    if (this.year){
+      this.loadMoviesByYear();
+    } else {
+      this.loadMovies();
+    }
   }
- 
+
+  findName(identifier) {
+    this.movieService
+      .findNames({
+        tconst: identifier
+      }).subscribe(
+        (res: HttpResponse<IName[]>) => this.movieNames[identifier] = res.body['data'].map(x => x.primaryName).join(','),
+        (res: HttpErrorResponse) => console.log(res.message)
+      );
+  }
+  
+  adjustNames(id) {
+    return this.movieNames[id];
+  }
 }
+
