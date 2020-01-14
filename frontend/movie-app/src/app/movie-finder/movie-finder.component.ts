@@ -14,6 +14,8 @@ export class MovieFinderComponent implements OnInit {
   message: any;
   search = '';
   filterBy = 'primaryTitle';
+  page = 0;
+  totalItems = 0;
 
   constructor(
     private movieService: MovieService
@@ -25,12 +27,30 @@ export class MovieFinderComponent implements OnInit {
 
   loadMovies() {
     this.movieService
-    .query({filterBy: this.filterBy, search: this.search})
+    .query({
+      filterBy: this.filterBy,
+      search: this.search,
+      page: this.page})
     .subscribe(
-      (res: HttpResponse<IMovie[]>) => (this.movies = res.body["data"]),
+      (res: HttpResponse<IMovie[]>) => this.validateSearch(this.movies = res.body),
       (res: HttpErrorResponse) => console.log(res.message)
     );
   }
 
+
+  validateSearch(result) {
+    this.movies = result["data"];
+    this.totalItems = result["totalItems"];
+  }
+
+  searchChanged() {
+    this.page = 0;
+    this.loadMovies();
+  }
+
+  pageChanged(page) {
+    this.page = page - 1;
+    this.loadMovies();
+  }
  
 }

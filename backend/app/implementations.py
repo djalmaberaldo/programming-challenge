@@ -8,21 +8,17 @@ from sqlalchemy import create_engine, or_, text
 package_dir = os.path.dirname(os.path.realpath(__file__+'\..\..'))
 
 def get_all_titles(search='', filterBy='primaryTitle'):
-    filters = add_is_adult_check('' if search == None else filterBy + " like '%"+search+"%' and")
+    filters = add_is_adult_check('' if search == None else filterBy + " like '%"+search+"%' ")
     return db.session.query(Title).filter(text(filters)).limit(1000)
 
 def get_titles_by_year(year=''):
     filters = add_is_adult_check('' if year == None else " startYear="+year)
     return db.session.query(Title).filter(text(filters)).order_by(Title.averageRating.desc()).limit(10)
 
-def get_all_movies(search='', filterBy='primaryTitle', page_size=4, page=0):
-    filters = add_movie_filter(add_is_adult_check(search if search == None else filterBy + " like '%"+search+"%' and"))
-    query = db.session.query(Title).filter(text(filters)).limit(10)
-    if page_size:
-        query = query.limit(page_size)
-    if page: 
-        query = query.offset(page*page_size)
-    return query
+def get_all_movies(search='', filterBy='primaryTitle', page=0, page_size=4):
+    filters = add_movie_filter(add_is_adult_check(search if search == None else filterBy + " like '%"+search+"%' "))
+    query = db.session.query(Title).filter(text(filters))
+    return query.limit(page_size).offset(int(page)*int(page_size)), query.count()
 
 def get_movies_by_year(year=''):
     if year is None:

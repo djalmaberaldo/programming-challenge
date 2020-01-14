@@ -38,9 +38,10 @@ def get_top_titles_by_yeaar():
 @cross_origin()
 def get_movies():
     search = request.args.get('search')
-    filterBy = request.args.get('filterBy')    
-    results = implementations.get_all_movies(search, filterBy);
-    return process_response(results)
+    filterBy = request.args.get('filterBy')
+    page = request.args.get('page')       
+    results, total = implementations.get_all_movies(search, filterBy, page);
+    return process_response(results, total)
 
 @app.route('/movies-by-year', methods=['GET'])
 @cross_origin()
@@ -64,9 +65,10 @@ def load_data_names():
     results = implementations.insert_data_name();
     return results
 
-def process_response(results=[]):
+def process_response(results=[], total='Unknown'):
     return jsonify({
-        'data': [result.serialize for result in results]
+        'data': [result.serialize for result in results],
+        'totalItems': total
     });
 
 if __name__ == "__main__":

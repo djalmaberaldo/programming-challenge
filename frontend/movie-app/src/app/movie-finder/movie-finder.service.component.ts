@@ -8,7 +8,7 @@ type EntityArrayResponseType = HttpResponse<IMovie[]>;
 
 @Injectable({ providedIn: 'root' })
 export class MovieService {
-  public resourceUrl = SERVER_API_URL + '/titles';
+  public resourceUrl = SERVER_API_URL + '/movies';
 
   constructor(protected http: HttpClient) {}
 
