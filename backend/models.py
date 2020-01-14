@@ -1,13 +1,21 @@
 from flask_sqlalchemy import SQLAlchemy
 import click
 from flask.cli import with_appcontext
+import os
+import gzip
+import pandas as pd
+from sqlalchemy import create_engine
 
 db = SQLAlchemy()
+package_dir = os.path.dirname(os.path.realpath(__file__+'\..'))
 
 def initialize_db(app):
-  app.app_context().push()
-  db.init_app(app)
-  db.create_all()
+    app.app_context().push()
+    app.cli.add_command(init_db)
+    db.init_app(app)
+
+def get_engine():
+    return create_engine("sqlite:///movies.db")
 
 class Title(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,6 +65,13 @@ class Name(db.Model):
             'knownForTitles': self.knownForTitles        
         }
 
+@click.command('init-db')
+@with_appcontext
+def init_db():
+    db.create_all()
+    insert_data_title()
+    insert_data_name()
+
 def insert_data_title():
     print('Inserting title data into table')
     file_to_search =  os.path.join(package_dir,'dataset\\title.basics.tsv.gz')
@@ -73,5 +88,27 @@ def insert_data_title():
     df = df[df['runtimeMinutes'].str.isnumeric()]
     df = df.dropna()
     print(df.head())
-    df.to_sql('title', engine, if_exists='append', index=False)
+    df.to_sql('title', get_engine(), if_exists='append', index=False)
     return 'Table Loaded'
+
+def read_ratings_data():
+    file_to_search_ratings =  os.path.join(package_dir,'dataset\\title.ratings.tsv.gz')
+    with gzip.open(file_to_search_ratings,'r') as file_ratings:
+        df_ratings = pd.read_csv(file_ratings, sep="\t")
+        print('Removing ratings lower than 6')
+        df_ratings = df_ratings[df_ratings['averageRating'] >= 6]
+    return df_ratings
+
+def insert_data_name():
+    print('Inserting title data into table')
+    file_to_search =  os.path.join(package_dir,'dataset\\name.basics.tsv.gz')
+    with gzip.open(file_to_search,'r') as file:
+        print('Reading tsv file')
+        df = pd.read_csv(file, sep="\t")
+        print('Removing null values')
+    df = df.dropna()
+    df = df.drop(columns=['nconst','primaryProfession'])
+    print(df.head())
+    df = df.loc[~df['knownForTitles'].isin(["\\N"])]
+    df.to_sql('name', get_engine(), if_exists='append', index=False)
+    return 'Table loaded'
