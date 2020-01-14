@@ -7,16 +7,13 @@ import implementations
 from flask_expects_json import expects_json
 from app import create_app
 
-
 route_blueprint = Blueprint('route_blueprint', __name__)
-
 
 @route_blueprint.route('/')
 def home():
     return '';
 
-@route_blueprint.route('/movies', methods=['GET'])
-@cross_origin()
+@route_blueprint.route('/api/movies', methods=['GET'])
 def get_movies():
     search = request.args.get('search')
     filterBy = request.args.get('filterBy')
@@ -27,7 +24,7 @@ def get_movies():
     results, total = implementations.get_all_movies(search, filterBy, page);
     return process_response(results, total)
 
-@route_blueprint.route('/movies/by-year', methods=['GET'])
+@route_blueprint.route('/api/movies/by-year', methods=['GET'])
 @cross_origin()
 def get_top_movies_by_yeaar():
     year = request.args.get('year')
@@ -39,7 +36,7 @@ def get_top_movies_by_yeaar():
     return process_response(results, total)
 
 
-@route_blueprint.route('/movies/names', methods=['GET','POST'])
+@route_blueprint.route('/api/movies/names', methods=['GET','POST'])
 def get_names():
     tconst = request.args.get('tconst')
     results, total = implementations.get_all_names(tconst);
