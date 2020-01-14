@@ -1,4 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+import click
+from flask.cli import with_appcontext
 
 db = SQLAlchemy()
 
@@ -54,3 +56,22 @@ class Name(db.Model):
             'deathYear': self.deathYear,
             'knownForTitles': self.knownForTitles        
         }
+
+def insert_data_title():
+    print('Inserting title data into table')
+    file_to_search =  os.path.join(package_dir,'dataset\\title.basics.tsv.gz')
+    with gzip.open(file_to_search,'r') as file:
+        print('Reading tsv file')
+        df = pd.read_csv(file, sep="\t")
+    print('Changing endYear n to 0')
+    df = df.replace({'endYear': "\\N"}, 0)
+    print('Removing movies out of pattern at isAdult column')
+    df = df.loc[df['isAdult'].isin([0,1])]
+    print('Removing null values')
+    df_ratings = read_ratings_data()
+    df = pd.merge(df, df_ratings, left_on="tconst", right_on='tconst')
+    df = df[df['runtimeMinutes'].str.isnumeric()]
+    df = df.dropna()
+    print(df.head())
+    df.to_sql('title', engine, if_exists='append', index=False)
+    return 'Table Loaded'
