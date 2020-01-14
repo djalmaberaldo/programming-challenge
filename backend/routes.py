@@ -15,27 +15,15 @@ route_blueprint = Blueprint('route_blueprint', __name__)
 def home():
     return '';
 
-@route_blueprint.route('/titles', methods=['GET'])
-@cross_origin()
-def get_titles():
-    search = request.args.get('search')
-    filterBy = request.args.get('filterBy')
-    results = implementations.get_all_titles(search, filterBy);
-    return process_response(results)
-
-@route_blueprint.route('/titles-by-year', methods=['GET'])
-@cross_origin()
-def get_top_titles_by_yeaar():
-    year = request.args.get('year')
-    results = implementations.get_titles_by_year(year);
-    return process_response(results)
-
 @route_blueprint.route('/movies', methods=['GET'])
 @cross_origin()
 def get_movies():
     search = request.args.get('search')
     filterBy = request.args.get('filterBy')
-    page = request.args.get('page')       
+    if request.args.get('page') is None:
+        return 'Page parameter necessary'
+    else:
+        page = request.args.get('page')
     results, total = implementations.get_all_movies(search, filterBy, page);
     return process_response(results, total)
 
@@ -43,9 +31,13 @@ def get_movies():
 @cross_origin()
 def get_top_movies_by_yeaar():
     year = request.args.get('year')
-    page = request.args.get('page')       
+    if request.args.get('page') is None:
+        return 'Page parameter necessary'
+    else:
+        page = request.args.get('page')    
     results, total = implementations.get_movies_by_year(year, page);
     return process_response(results, total)
+
 
 @route_blueprint.route('/movies/names', methods=['GET','POST'])
 def get_names():
@@ -53,21 +45,12 @@ def get_names():
     results, total = implementations.get_all_names(tconst);
     return process_response(results, total)
 
-@route_blueprint.route('/load-titles', methods=['GET'])
-def load_data_title():
-    results = implementations.insert_data_title();
-    return results
-
-@route_blueprint.route('/load-names', methods=['GET'])
-def load_data_names():
-    results = implementations.insert_data_name();
-    return results
-
 def process_response(results=[], total='Unknown'):
     return jsonify({
         'data': [result.serialize for result in results],
         'totalItems': total
     });
+    
 
 if __name__ == "__main__":
     app = create_app()
