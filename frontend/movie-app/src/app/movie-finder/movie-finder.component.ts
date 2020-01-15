@@ -18,6 +18,7 @@ export class MovieFinderComponent implements OnInit {
   totalItems = 0;
   movieNames = [];
   year = '';
+  itemsPerPage = 4;
 
   constructor(
     private movieService: MovieService
@@ -73,26 +74,5 @@ export class MovieFinderComponent implements OnInit {
     }
   }
 
-  findName(identifier) {
-    this.movieService
-      .findNames({
-        tconst: identifier
-      }).subscribe(
-        (res: HttpResponse<IName[]>) => this.movieNames[identifier] = this.checkNameResult(res.body['data']),
-        (res: HttpErrorResponse) => console.log(res.message)
-      );
-  }
-
-  checkNameResult(result) {
-    if (Array.isArray(result) && result.length) {
-      return result.map(x => x.primaryName).join(',');
-    } else {
-      return 'Result not found';
-    }
-  }
-
-  adjustNames(id) {
-    return this.movieNames[id];
-  }
 }
 

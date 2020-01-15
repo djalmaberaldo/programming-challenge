@@ -1,0 +1,11 @@
+<div class="w-100">
+    <p class="card-text"><b>Casting and Crew</b>: 
+        <span *ngIf="names==''">
+            <button type="button" (click)="findName(tconst)" *ngIf="!isSearching" class="btn btn-success"> SEARCH </button>
+            <span *ngIf="isSearching"> <h5> Loading ... </h5> </span>
+        </span>
+        <span *ngIf="names != '' ">
+            {{  names  }}
+        </span>
+    </p>
+</div>

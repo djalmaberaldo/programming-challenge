@@ -8,12 +8,14 @@ import { HeaderBarComponent } from './header-bar/header-bar.component';
 import { HttpClientModule } from '@angular/common/http';
 import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 import {FormsModule} from '@angular/forms';
+import { CastingBoxComponent } from './casting-box/casting-box.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MovieFinderComponent,
-    HeaderBarComponent
+    HeaderBarComponent,
+    CastingBoxComponent
   ],
   imports: [
     BrowserModule,
