@@ -39,6 +39,8 @@ def get_top_movies_by_yeaar():
 @route_blueprint.route('/api/movies/names', methods=['GET','POST'])
 def get_names():
     tconst = request.args.get('tconst')
+    if tconst is None:
+            return process_response([],0)
     results, total = implementations.get_all_names(tconst);
     return process_response(results, total)
 

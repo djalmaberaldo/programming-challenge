@@ -5,6 +5,8 @@ import os
 import gzip
 import pandas as pd
 from sqlalchemy import create_engine
+import zipfile
+
 
 db = SQLAlchemy()
 package_dir = os.path.dirname(os.path.realpath(__file__+'\..'))
