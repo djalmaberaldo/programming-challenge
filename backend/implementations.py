@@ -13,8 +13,13 @@ def get_titles_by_year(year=''):
     return db.session.query(Title).filter(text(filters)).order_by(Title.averageRating.desc()).limit(10)
 
 def get_all_movies(search='', filterBy='primaryTitle', page=0, page_size=4):
-    filters = add_movie_filter(add_is_adult_check(search if search == None else filterBy + " like '%"+search+"%' "))
-    query = db.session.query(Title).filter(text(filters))
+    query = db.session.query(Title)
+    if (filterBy=='averageRating'):
+        filters = add_movie_filter(add_is_adult_check(search if search == None else "primaryTitle like '%"+search+"%' "))
+        query = query.filter(text(filters)).order_by(Title.averageRating.desc())
+    else:
+        filters = add_movie_filter(add_is_adult_check(search if search == None else filterBy + " like '%"+search+"%' "))
+        query =  query.filter(text(filters))
     return query.limit(int(page_size)).offset(int(page)*int(page_size)), query.count()
 
 def get_movies_by_year(year='',  page=0, page_size=4):
@@ -22,7 +27,8 @@ def get_movies_by_year(year='',  page=0, page_size=4):
         get_all_movies()
     else:
         filters = add_movie_filter(add_is_adult_check("startYear="+year))
-        return db.session.query(Title).filter(text(filters)).order_by(Title.averageRating.desc()).limit(10).offset(int(page)*int(page_size)), 10
+        query = db.session.query(Title).filter(text(filters)).order_by(Title.averageRating.desc()).limit(10).offset(int(page)*int(page_size))
+        return query, query.count()
 
 def get_all_names(tconst):
     return db.session.query(Name).filter(Name.knownForTitles.like(tconst)), db.session.query(Name).filter(Name.knownForTitles.like(tconst)).count()

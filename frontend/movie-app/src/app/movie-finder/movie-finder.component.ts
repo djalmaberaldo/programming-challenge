@@ -66,7 +66,6 @@ export class MovieFinderComponent implements OnInit {
 
   pageChanged(page) {
     this.page = page - 1;
-    this.movieNames = [];
     if (this.year){
       this.loadMoviesByYear();
     } else {

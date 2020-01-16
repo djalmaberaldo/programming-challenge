@@ -25,7 +25,6 @@ def get_movies():
     return process_response(results, total)
 
 @route_blueprint.route('/api/movies/by-year', methods=['GET'])
-@cross_origin()
 def get_top_movies_by_yeaar():
     year = request.args.get('year')
     if request.args.get('page') is None:
