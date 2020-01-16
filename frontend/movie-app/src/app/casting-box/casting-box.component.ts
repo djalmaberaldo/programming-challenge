@@ -10,9 +10,9 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 })
 export class CastingBoxComponent  {
 
+  @Input() tconst: string;
   names = '';
   isSearching = false;
-  @Input() tconst;
 
   constructor(
     private movieService: MovieService

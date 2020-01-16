@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CastingBoxComponent } from './casting-box.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('CastingBoxComponent', () => {
   let component: CastingBoxComponent;
@@ -8,7 +9,8 @@ describe('CastingBoxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CastingBoxComponent ]
+      imports: [HttpClientModule],
+      declarations: [ CastingBoxComponent]
     })
     .compileComponents();
   }));

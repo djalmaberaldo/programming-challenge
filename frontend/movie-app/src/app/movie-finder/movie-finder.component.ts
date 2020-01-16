@@ -10,13 +10,12 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 })
 export class MovieFinderComponent implements OnInit {
 
-  movies: IMovie[];
+  movies: IMovie[] = [];
   message: any;
   search = '';
   filterBy = 'primaryTitle';
   page = 0;
   totalItems = 0;
-  movieNames = [];
   year = '';
   itemsPerPage = 4;
 

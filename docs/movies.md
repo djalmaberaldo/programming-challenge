@@ -1,13 +1,3 @@
-**Table of Contents**
-- [Technologies](#Technologies)
-- [Backend](#Backend)
- * [Instalation](#Instalation)
- * [Design] (#Design)
- * [Running](#Running)
- * [Endpoints](#Endpoints)
-- [Database]
-- [Frontend]
-
 
 ### Technologies
 
@@ -17,17 +7,20 @@
 
 ### Backend
 
-#### Instalation
+#### Installing requirements
 - It is necessary to have Python installed. This can be achieved by following instructions here:  https://www.python.org/downloads/
 - It is higly recommend to have installed PyPA for installing Python packages on command line. This can be achieved by following instructions here: https://pypi.org/
 - Inside the folder **backend**, there is a requirements.txt file.  There, you can find all the necessary packages and its versions to run the backend properly. A faster installion would be running the command **pip install -r requirements.txt** .
 
+__Important:__ depending on your system, make sure to use `pip3` and `python3` instead.
+
+
 #### Design
 + The backend has 4 files only:
-	* ** routes.py **:  Where all the endpoints of REST API are registered and responses are processed.
-	* ** models.py**:  Where the classes that represents the model used for the database used through all the application. It is where the command that reads the zipped files, filters data and creates the database populated .
+	* **routes.py**:  Where all the endpoints of REST API are registered and responses are processed.
+	* **models.py**:  Where the classes that represents the model used for the database used through all the application. It is where the command that reads the zipped files, filters data and creates the database populated .
 	* **implementations.py**: Where there are all the methods that finds the data requested on routes.py.
-	* ** __init__.py **: Inside app folder, it is the file that creates the Flask app and its context through the whole project. It uses the design pattern **Factory** to instantiate the app.
+	* **__init__.py **: Inside app folder, it is the file that creates the Flask app and its context through the whole project. It uses the design pattern **Factory** to instantiate the app.
 
 #### Running
 - Go to backend/app and on command line type (Windows):
@@ -36,7 +29,7 @@
 - Or Linux
 `$env:FLASK_APP = "routes.py"`
 
-- Then type on command line:
+- Then move to parent folder and type:
 `flask run `
 
 - The backend is already running!
@@ -89,14 +82,14 @@
 
 - The primaryProfession and nconst fields on file **name.basics.tsv.gz** was removed because it would be a parameter of searching on REST API and it would help reduce the database size.
 
-- To create database, it is necessary first to folowing the instructions above of running the backend. Then, at another terminal, type:
+- To create database, it is necessary first to folowing the instructions above of running the backend. Then, at another terminal, type ate folder "backend":
 `flask init-db`
 
 - During the process, the application filters the data inside the files. It is done using the package **Pandas**. All null values are removed, data out of pattern are dimissed, title with rating less than 6 are removed.
 
 - It might take some time to complete the task, but at the application should create a file inside backend folder called **movies.db**
 
-- **IMPORTANT**:  It is necessary to unzip the files **titles.basics.tsv.zip.001** and **name.basics.tsv.zip.001** , copy the **.gz**  files inside, and paste on the root of **dataset** folder, otherwise it won't be posible to create the database. 
+__Important:__:  It is necessary to unzip the files **titles.basics.tsv.zip.001** and **name.basics.tsv.zip.001** , copy the **.gz**  files inside, and paste on the root of **dataset** folder, otherwise it won't be posible to create the database. 
 
 ### Front-end
 
@@ -106,7 +99,7 @@
 - Inside movie-app folder, run:
 `npm install`
 
-- It will check the packages on file packages.json and install locally inside the project.
+- It will check the packages on file packages.json and install locally the packages (**Bootstrap, NGXPagination**) inside the project.
 - There are 3 components here: movie-finder, header-bar and casting-box;
 	Casting-box: component that represent the box where the data of names related to the title wil show on its movie card
 	Header-bar: just a component to separate the toolbar on top from the main component code
@@ -114,3 +107,5 @@
 - To run the app, just type inside movie-app:
 	 `ng serve`
 - Open the browser on **localhost:4200**
+- When results are shown, there it will be a small box below of every card with the title **Casting and Crew** and a green search button on right side. It is because the names are not loaded when the movie is found, it is needed to click on the green button and then the application will the list the names of people enrolled on that movie.
+- For running tests: `ng test`.

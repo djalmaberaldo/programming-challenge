@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MovieFinderComponent } from './movie-finder.component';
+import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { HttpClientModule } from '@angular/common/http';
+import { CastingBoxComponent } from '../casting-box/casting-box.component';
 
 describe('MovieFinderComponent', () => {
   let component: MovieFinderComponent;
@@ -8,7 +12,8 @@ describe('MovieFinderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MovieFinderComponent ]
+      imports: [FormsModule, NgxPaginationModule, HttpClientModule],
+      declarations: [ MovieFinderComponent, CastingBoxComponent]
     })
     .compileComponents();
   }));

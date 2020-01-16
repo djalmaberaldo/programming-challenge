@@ -1,15 +1,25 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { MovieFinderComponent } from './movie-finder/movie-finder.component';
+import { HeaderBarComponent } from './header-bar/header-bar.component';
+import { CastingBoxComponent } from './casting-box/casting-box.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        FormsModule,
+        HttpClientModule,
+        NgxPaginationModule,
+        FormsModule
       ],
       declarations: [
-        AppComponent
+        AppComponent, MovieFinderComponent, HeaderBarComponent, CastingBoxComponent
       ],
     }).compileComponents();
   }));
@@ -26,10 +36,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('movie-app');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('movie-app app is running!');
-  });
 });
