@@ -9,7 +9,7 @@
 
 #### Installing requirements
 - It is necessary to have Python installed. This can be achieved by following instructions here:  https://www.python.org/downloads/
-- It is higly recommend to have installed PyPA for installing Python packages on command line. This can be achieved by following instructions here: https://pypi.org/
+- It is higly recommended to have installed PyPA for installing Python packages on command line. This can be achieved by following instructions here: https://pypi.org/
 - Inside the folder **backend**, there is a requirements.txt file.  There, you can find all the necessary packages and its versions to run the backend properly. A faster installion would be running the command **pip install -r requirements.txt** .
 
 __Important:__ depending on your system, make sure to use `pip3` and `python3` instead.
@@ -20,7 +20,7 @@ __Important:__ depending on your system, make sure to use `pip3` and `python3` i
 	* **routes.py**:  Where all the endpoints of REST API are registered and responses are processed.
 	* **models.py**:  Where the classes that represents the model used for the database used through all the application. It is where the command that reads the zipped files, filters data and creates the database populated .
 	* **implementations.py**: Where there are all the methods that finds the data requested on routes.py.
-	* **__init__.py **: Inside app folder, it is the file that creates the Flask app and its context through the whole project. It uses the design pattern **Factory** to instantiate the app.
+	* **init.py**: Inside app folder, it is the file that creates the Flask app and its context through the whole project. It uses the design pattern **Factory** to instantiate the app.
 
 #### Running
 - Go to backend/app and on command line type (Windows):
@@ -36,18 +36,18 @@ __Important:__ depending on your system, make sure to use `pip3` and `python3` i
 
 #### Endpoints
 - **/api/movies [GET]**
-	Requested param is **page**, otherwise it will return a message error.
-	Params **search** and **filterBy** might be passed as well. If they are not, the method set **filterBy** as **primaryTitle**.
-	It searches movies based on the params. The results are paginated.
+	- Requested param is **page**, otherwise it will return a message error.
+	- Params **search** and **filterBy** might be passed as well. If they are not, the method set **filterBy** as **primaryTitle**.
+	- It searches movies based on the params. The results are paginated.
 
 - **/api/movies/by-year [GET]** 
-	Requested param is **page**, otherwise it will return a message error.
-	Param year should be passed as well. If it is not,  the method searches for the all movies paginated ordered by ratings.
-	It searches top movies by year based on the year. The results are paginated.
+	- Requested param is **page**, otherwise it will return a message error.
+	- Param year should be passed as well. If it is not,  the method searches for the all movies paginated ordered by ratings.
+	- It searches top movies by year based on the year. The results are paginated.
 
 - **/api/movies/names [GET]** 
-	Requested param is **tconst**, otherwise it will return an empty result.
-	It searches the names related to the tconst title. The results are paginated.
+	- Requested param is **tconst**, otherwise it will return an empty result.
+	- It searches the names related to the tconst title. The results are paginated.
 
 ### Database
 
@@ -90,6 +90,8 @@ __Important:__ depending on your system, make sure to use `pip3` and `python3` i
 - It might take some time to complete the task, but at the application should create a file inside backend folder called **movies.db**
 
 __Important:__:  It is necessary to unzip the files **titles.basics.tsv.zip.001** and **name.basics.tsv.zip.001** , copy the **.gz**  files inside, and paste on the root of **dataset** folder, otherwise it won't be posible to create the database. 
+
+![Alt text](dataset.JPG)
 
 ### Front-end
 
